@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Euclidian Sequencer</title>
+  </head>
+  <body>
+    <h1>Euclidian Beat Sequencer</h1>
+    <table>
+      <tr>
+        <td>
+          <form>
+            <button type="submit">Get Midi Ports</button>
+          </form>
+        </td>
+        <td>
+          <ul class="midiPortList"></ul>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <form class="playSync">
+            <div>
+              <label>Enter the MIDI channel</label>
+              <input type="text" id="playSyncMidi" autofocus>
+            </div>
+            <button type="submit">Play Sync</button>
+            <div class="stop">
+              <button type="click">stop</button>
+            </div>
+          </form>
+        </td>
+      </tr>
+    </table>
+    <ul class="sequences"></ul>
+
+    <script>
+
+      //list that shows the sequencers that have been created
+      //each sequencer has a button
+      //There is a master clock setting diplayed as well
+
+      const electron = require('electron');
+      const {ipcRenderer} = electron;
+      const ulseq = document.querySelector('.sequences');
+      const ulmidi = document.querySelector('.midiPortList');
+      const playSyncForm = document.querySelector('.playSync');
+      const form = document.querySelector('form');
+      const stopDiv = document.querySelector('.stop');
+
+      var midiRendered = false;
+
+      stopDiv.addEventListener('click',stopPlaying);
+
+      function stopPlaying(e){
+        e.preventDefault();
+        ipcRenderer.send('stop');
+      }
+
+      playSyncForm.addEventListener('submit',playSync);
+
+      function playSync(e){
+        e.preventDefault();
+        const midiChan = document.querySelector('#playSyncMidi').value;
+        ipcRenderer.send('playSync',midiChan);
+      }
+
+      form.addEventListener('submit',clickButton);
+
+      function clickButton(e) {
+        e.preventDefault();
+        if(midiRendered){
+          return;
+        }
+        midiRendered = true;
+        //console.log('cliked');
+        ipcRenderer.send('getMidi');
+      }
+
+      ipcRenderer.on('startup',function(e,midiPortNames){
+      //  console.log('calling startup');
+      //  console.log(midiPortNames);
+        for(var i=0;i<midiPortNames.length;i++){
+          const li = document.createElement('li');
+          const text = document.createTextNode(`${midiPortNames[i]} Port Number: ${i}`);
+          li.appendChild(text);
+          ulmidi.appendChild(li);
+        }
+      });
+
+      ipcRenderer.on('seq:new',function(e,seqParams){
+
+        const li = document.createElement('li');
+
+        const {beat,hit,offset,bpm,channelNumber,midi} = seqParams;
+        const text = document.createTextNode(`Beats: ${beat} Hits: ${hit} Offset: ${offset} bpm: ${bpm} midi: ${midi} channel: ${channelNumber}`);
+
+        const playButton = document.createElement('button');        // Create a <button> element
+        playButton.innerHTML ='Play';
+
+        li.appendChild(text);
+        ulseq.appendChild(li);
+        ulseq.appendChild(playButton);
+
+
+        playButton.addEventListener ("click", function() {
+          ipcRenderer.send('play',seqParams);
+        });
+
+      });
+
+      ipcRenderer.on('item:clear',function(e,item){
+        ul.innerHTML = '';
+      });
+
+
+    </script>
+  </body>
+</html>

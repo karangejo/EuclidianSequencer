@@ -1,0 +1,19 @@
+{
+  "name": "eurythms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^4.0.8",
+    "midi": "^0.9.5"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^1.8.4"
+  }
+}

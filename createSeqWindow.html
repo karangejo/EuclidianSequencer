@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Create a Sequence</title>
+  </head>
+  <body>
+    <form>
+    <div>
+      <div>
+        <label>Enter number of beats</label>
+        <input type="text" id="beat" autofocus>
+      </div>
+      <div>
+        <label>Enter number of hits</label>
+        <input type="text" id="hit" autofocus>
+      </div>
+      <div>
+        <label>Enter the rotation offset</label>
+        <input type="text" id="offset" autofocus>
+      </div>
+        <label>Enter the MIDI note number</label>
+        <input type="text" id="note" autofocus>
+      </div>
+      <div>
+        <label>Enter the tempo in BPM</label>
+        <input type="text" id="bpm" autofocus>
+      </div>
+      <div>
+        <label>Enter the MIDI channel</label>
+        <input type="text" id="midi" autofocus>
+      </div>
+    </div>
+    <button type="submit">Create</button>
+  </form>
+
+  <script>
+    // form to input parameters for the sequencer
+      const electron = require('electron');
+      const {ipcRenderer} = electron;
+
+      const form = document.querySelector('form');
+      form.addEventListener('submit',submitForm);
+
+      function submitForm(e) {
+        e.preventDefault();
+        const beat = document.querySelector('#beat').value;
+        const hit = document.querySelector('#hit').value;
+        const offset = document.querySelector('#offset').value;
+        const bpm = document.querySelector('#bpm').value;
+        const midi = document.querySelector('#midi').value;
+        const note = document.querySelector('#note').value;
+
+        //check if input is a number and alert if not
+        if(isNaN(beat)||isNaN(hit)||isNaN(offset)||isNaN(bpm)||isNaN(midi)||isNaN(note)){
+          alert('Oops! inputs must be numbers!');
+          return;
+        }
+        const seqParams = {beat: beat,hit:hit,offset:offset,bpm:bpm,midi:midi,note:note};
+        //send the parameters to main.js
+        ipcRenderer.send('seq:new',seqParams);
+      }
+    </script>
+
+  </body>
+</html>
