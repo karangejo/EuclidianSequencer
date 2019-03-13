@@ -1,20 +1,30 @@
 {
   "name": "eurythms",
-  "version": "1.0.0",
+  "productName": "Euclidian Beat Sequencer",
+  "version": "0.1.0",
   "description": "",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . euSeq --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Euclidian Beat Sequencer\"",
+    "package-linux": "electron-packager . euSeq --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/icon.png --prune=true --out=release-builds",
+    "build": "electron-packager . euSeq --icon=assets/icons/png/icon.png prune=true",
+    "package": "asar pack euSeq-linux-x64/resources/app/ euSeq-linux-x64/resources/app.asar"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Karang",
+  "license": "MIT",
   "dependencies": {
-    "electron": "^4.0.8",
-    "electron-reload": "^1.4.0",
-    "midi": "^0.9.5"
+    "midi": "^0.9.5",
+    "electron-reload": "^1.4.0"
   },
   "devDependencies": {
+    "electron": "^4.0.8",
+    "electron-reload": "^1.4.0",
+    "midi": "^0.9.5",
+    "asar": "^1.0.0",
+    "electron-packager": "^13.1.1",
     "electron-rebuild": "^1.8.4"
   }
 }

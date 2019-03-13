@@ -3,10 +3,13 @@ const url = require('url');
 const path = require('path');
 const midi = require('midi');
 require('electron-reload')(__dirname, {
-    // Note that the path to electron may vary according to the main file
     electron: require(`${__dirname}/node_modules/electron`)
 });
 const  {app, BrowserWindow, Menu, ipcMain} = electron;
+
+//Set ENV
+process.env.NODE_ENV = 'production';
+
 //initialize some variables
 let mainWindow;
 let createSeqWindow;
