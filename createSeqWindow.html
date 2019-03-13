@@ -2,37 +2,40 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Create a Sequence</title>
+    <title>Create a Sequencer</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   </head>
-  <body>
+  <body style="background-color:#053f5e">
+    <div class="container">
     <form>
     <div>
+      <h4 style="color:#ffd700">New Sequencer</h4>
       <div>
-        <label>Enter number of beats</label>
-        <input type="text" id="beat" autofocus>
-      </div>
-      <div>
-        <label>Enter number of hits</label>
-        <input type="text" id="hit" autofocus>
+        <label>Enter number of beats:</label>
+        <input type="text" id="beat" placeholder="8" autofocus>
       </div>
       <div>
-        <label>Enter the rotation offset</label>
-        <input type="text" id="offset" autofocus>
-      </div>
-        <label>Enter the MIDI note number</label>
-        <input type="text" id="note" autofocus>
+        <label>Enter number of hits:</label>
+        <input type="text" id="hit" placeholder="4" autofocus>
       </div>
       <div>
-        <label>Enter the tempo in BPM</label>
-        <input type="text" id="bpm" autofocus>
+        <label>Enter the rotation offset:</label>
+        <input type="text" id="offset" placeholder="0" autofocus>
+      </div>
+        <label>Enter the MIDI note number:</label>
+        <input type="text" id="note" placeholder="60" autofocus>
       </div>
       <div>
-        <label>Enter the MIDI channel</label>
-        <input type="text" id="midi" autofocus>
+        <label>Enter the tempo in BPM:</label>
+        <input type="text" id="bpm" placeholder="120" autofocus>
       </div>
-    </div>
-    <button type="submit">Create</button>
+      <div>
+        <label>Enter the MIDI port number:</label>
+        <input type="text" id="midi" placeholder="0" autofocus>
+      </div>
+    <button class="btn waves-effect waves-light" type="submit">Create</button>
   </form>
+  </div>
 
   <script>
     // form to input parameters for the sequencer

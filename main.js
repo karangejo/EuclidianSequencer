@@ -2,8 +2,12 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 const midi = require('midi');
+require('electron-reload')(__dirname, {
+    // Note that the path to electron may vary according to the main file
+    electron: require(`${__dirname}/node_modules/electron`)
+});
 const  {app, BrowserWindow, Menu, ipcMain} = electron;
-
+//initialize some variables
 let mainWindow;
 let createSeqWindow;
 let choosenMidiPorts = [];
@@ -120,7 +124,7 @@ app.on('ready', function(){
 function createSeq(){
   createSeqWindow = new BrowserWindow({
     width: 300,
-    height: 400,
+    height: 600,
     autoHideMenuBar: true
   });
 
@@ -181,12 +185,13 @@ ipcMain.on('play',function(e,seqParams){
   loopSeq(pattern,duration,note,output,127);
 });
 
-//receiver for stoping the sequencer
+//receiver for stoping all sequences
 ipcMain.on('stop',function(e){
 //  console.log('Stop Playing Here');
   dontLoop = true;
 });
 
+// play all created sequences in sync
 ipcMain.on('playSync',function(e,midiChan){
   dontLoop=false;
   midiChan = parseInt(midiChan);
@@ -237,28 +242,7 @@ const mainMenuTemplate = [
       }
     ]
   },
-  //{
-    //label:'Midi Ports',
-    //submenu:[]
-  //}
-];
-
-/*
-//add midi ports to menu
-var counter = -1;
-for(var i=0;i<numMidiOuts;i++){
-  counter ++;
-  midiPortNames[i] = output.getPortName(i);
-  //counter.push(midiPortNames[i].slice());
-  mainMenuTemplate[1].submenu.push({
-    label: midiPortNames[i],
-    click(){
-      chooseMidiPort(counter);
-    }
-  })
-}
-*/
-
+]
 
 
 //menu  for mac users

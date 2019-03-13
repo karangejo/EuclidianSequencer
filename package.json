@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "electron": "^4.0.8",
+    "electron-reload": "^1.4.0",
     "midi": "^0.9.5"
   },
   "devDependencies": {

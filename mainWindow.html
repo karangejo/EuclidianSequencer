@@ -3,14 +3,19 @@
   <head>
     <meta charset="utf-8">
     <title>Euclidian Sequencer</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   </head>
-  <body>
-    <h1>Euclidian Beat Sequencer</h1>
+  <body style="background-color:#115173">
+    <nav>
+      <div class="nav-wrapper" style="background-color:#022c43">
+        <a class="brand-logo center" style="color:#ffd700">Euclidian Beat Sequencer</a>
+      </div>
+    </nav>
     <table>
       <tr>
         <td>
           <form>
-            <button type="submit">Get Midi Ports</button>
+            <button class="btn waves-effect waves-light" type="submit">Get Midi Ports</button>
           </form>
         </td>
         <td>
@@ -19,20 +24,33 @@
       </tr>
       <tr>
         <td>
+          <div class="playSyncButton">
+            <button class="btn waves-effect waves-light" type="submit">Play Sync</button>
+          </div>
+        </td>
+        <td>
           <form class="playSync">
             <div>
               <label>Enter the MIDI channel</label>
-              <input type="text" id="playSyncMidi" autofocus>
-            </div>
-            <button type="submit">Play Sync</button>
-            <div class="stop">
-              <button type="click">stop</button>
+              <input type="text" placeholder="0"id="playSyncMidi" autofocus>
             </div>
           </form>
         </td>
       </tr>
+      <tr>
+        <td>
+          <div class="stop">
+            <button class="btn waves-effect waves-light" type="click">Stop All</button>
+          </div>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <ul class="sequences"></ul>
+        </td>
+      </tr>
     </table>
-    <ul class="sequences"></ul>
 
     <script>
 
@@ -47,6 +65,7 @@
       const playSyncForm = document.querySelector('.playSync');
       const form = document.querySelector('form');
       const stopDiv = document.querySelector('.stop');
+      const playSyncButton = document.querySelector('.playSyncButton');
 
       var midiRendered = false;
 
@@ -57,7 +76,7 @@
         ipcRenderer.send('stop');
       }
 
-      playSyncForm.addEventListener('submit',playSync);
+      playSyncButton.addEventListener('submit',playSync);
 
       function playSync(e){
         e.preventDefault();
@@ -80,8 +99,13 @@
       ipcRenderer.on('startup',function(e,midiPortNames){
       //  console.log('calling startup');
       //  console.log(midiPortNames);
+        ulmidi.className = 'collection';
+        ulmidi.style.margin = "0";
+        ulmidi.style.border = "0";
         for(var i=0;i<midiPortNames.length;i++){
           const li = document.createElement('li');
+          li.style.backgroundColor = "#ffd700";
+          li.className='collection-item'
           const text = document.createTextNode(`${midiPortNames[i]} Port Number: ${i}`);
           li.appendChild(text);
           ulmidi.appendChild(li);
@@ -89,14 +113,19 @@
       });
 
       ipcRenderer.on('seq:new',function(e,seqParams){
-
+        ulseq.className = 'collection';
+        ulseq.style.margin = "0";
+        ulseq.style.border = "0";
         const li = document.createElement('li');
-
+        li.style.backgroundColor = "#053f5e";
+        li.className = 'collection-item';
+        li.style.borderBottom = "0";
         const {beat,hit,offset,bpm,channelNumber,midi} = seqParams;
         const text = document.createTextNode(`Beats: ${beat} Hits: ${hit} Offset: ${offset} bpm: ${bpm} midi: ${midi} channel: ${channelNumber}`);
 
         const playButton = document.createElement('button');        // Create a <button> element
         playButton.innerHTML ='Play';
+        playButton.className = "btn waves-effect waves-light";
 
         li.appendChild(text);
         ulseq.appendChild(li);
@@ -110,7 +139,8 @@
       });
 
       ipcRenderer.on('item:clear',function(e,item){
-        ul.innerHTML = '';
+        ulseq.innerHTML = '';
+        ulseq.className = '';
       });
 
 
