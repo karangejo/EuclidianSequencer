@@ -20,7 +20,7 @@
     "electron-reload": "^1.4.0"
   },
   "devDependencies": {
-    "electron": "^4.0.8",
+    "electron": "^18.3.7",
     "electron-reload": "^1.4.0",
     "midi": "^0.9.5",
     "asar": "^1.0.0",
